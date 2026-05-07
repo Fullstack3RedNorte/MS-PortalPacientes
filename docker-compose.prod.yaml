@@ -1,3 +1,6 @@
+# docker-compose.prod.yaml
+# Versión para producción/distribución que usa imagen precompilada de Docker Hub
+
 services:
   mysql:
     image: 'mysql:latest'
@@ -21,7 +24,7 @@ services:
 
   portal-app:
     container_name: ms-portal-app
-    image: sh1r8/ms-portal-pacientes:latest
+    image: sh1r8/ms-portal-pacientes:latest  # Imagen precompilada de Docker Hub
     ports:
       - '8081:8081'
     environment:
