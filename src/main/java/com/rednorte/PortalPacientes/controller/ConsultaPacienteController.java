@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rednorte.PortalPacientes.model.SolicitudResumen;
+import com.rednorte.PortalPacientes.dto.SolicitudResumenDTO;
 import com.rednorte.PortalPacientes.service.ConsultaPacienteService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +32,7 @@ public class ConsultaPacienteController {
     }
 
     @GetMapping("/{rut}/resumen")
-    public List<SolicitudResumen> obtenerResumenPorRut(@PathVariable String rut) {
+    public List<SolicitudResumenDTO> obtenerResumenPorRut(@PathVariable String rut) {
         return consultaPacienteService.obtenerPorRut(rut);
     }
 }
