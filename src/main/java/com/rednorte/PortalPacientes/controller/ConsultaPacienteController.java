@@ -30,6 +30,11 @@ public class ConsultaPacienteController {
     public void registrarConsulta(@PathVariable String rut, HttpServletRequest request) {
         consultaPacienteService.registrarConsulta(rut, request.getRemoteAddr());
     }
+// Para fines demostrativos 
+    @GetMapping("/ejemplo")
+    public List<SolicitudResumenDTO> obtenerEjemplo() {
+        return consultaPacienteService.obtenerPorRut("12345678-9");
+    }
 
     @GetMapping("/{rut}/resumen")
     public List<SolicitudResumenDTO> obtenerResumenPorRut(@PathVariable String rut) {
