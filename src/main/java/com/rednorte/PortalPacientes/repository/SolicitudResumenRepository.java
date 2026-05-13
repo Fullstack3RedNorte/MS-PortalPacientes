@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.rednorte.PortalPacientes.model.SolicitudResumen;
+import com.rednorte.PortalPacientes.dto.SolicitudResumenDTO;
 
 @Repository
 public class SolicitudResumenRepository {
@@ -16,11 +16,11 @@ public class SolicitudResumenRepository {
         this.consultaPacienteRepository = consultaPacienteRepository;
     }
 
-    public List<SolicitudResumen> obtenerPorRut(String rut) {
+    public List<SolicitudResumenDTO> obtenerPorRut(String rut) {
         return consultaPacienteRepository.findByRutPacienteOrderByFechaConsultaDesc(rut)
                 .stream()
                 .map(consulta -> {
-                    SolicitudResumen resumen = new SolicitudResumen();
+                    SolicitudResumenDTO resumen = new SolicitudResumenDTO();
                     resumen.setEspecialidad("Medicina General");
                     resumen.setEstado("REGISTRADA");
                     resumen.setFechaRegistro(consulta.getFechaConsulta());

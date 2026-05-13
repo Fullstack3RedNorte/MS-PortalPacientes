@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rednorte.PortalPacientes.model.SolicitudResumen;
+import com.rednorte.PortalPacientes.dto.SolicitudResumenDTO;
 import com.rednorte.PortalPacientes.service.SolicitudResumenService;
 
 @RestController
@@ -21,7 +21,7 @@ public class SolicitudResumenController {
     }
 
     @GetMapping("/{rut}")
-    public List<SolicitudResumen> obtenerPorRut(@PathVariable String rut) {
+    public List<SolicitudResumenDTO> obtenerPorRut(@PathVariable String rut) {
         return solicitudResumenService.obtenerPorRut(rut);
     }
 }
