@@ -26,11 +26,12 @@ services:
     container_name: ms-portal-app
     image: sh1r8/ms-portal-pacientes:latest  # Imagen precompilada de Docker Hub
     ports:
-      - '8081:8081'
+      - '8088:8088'
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mydatabase
       SPRING_DATASOURCE_USERNAME: myuser
       SPRING_DATASOURCE_PASSWORD: secret
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     depends_on:
       mysql:
         condition: service_healthy

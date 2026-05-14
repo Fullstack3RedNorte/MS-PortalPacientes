@@ -38,7 +38,7 @@ docker-compose down
   - Usuario: `myuser`
   - Contraseña: `secret`
 
-- **Aplicación Spring Boot**: `http://localhost:8081`
+- **Aplicación Spring Boot**: `http://localhost:8088`
   - POST `/api/consultas/{rut}` - Registrar consulta
   - GET `/api/consultas/{rut}/resumen` - Obtener resúmenes
   - GET `/api/solicitudes-resumen/{rut}` - Obtener resúmenes
