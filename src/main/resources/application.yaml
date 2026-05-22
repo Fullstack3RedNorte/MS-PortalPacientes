@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: ms-portal-pacientes
+
+server:
+  port: 8088
+
+ms:
+  lista-espera:
+    base-url: ${MS_LISTA_ESPERA_URL:http://localhost:8085}
