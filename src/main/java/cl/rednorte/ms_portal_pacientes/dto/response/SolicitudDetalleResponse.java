@@ -12,6 +12,5 @@ public class SolicitudDetalleResponse {
     private String estado;
     private LocalDateTime fechaRegistro;
     private LocalDateTime fechaCita;
-    private String documentosRequeridos;
     private List<HistorialEstadoResponse> historial;
 }

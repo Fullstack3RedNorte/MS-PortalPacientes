@@ -11,5 +11,4 @@ public class SolicitudResumenResponse {
     private String estado;
     private LocalDateTime fechaRegistro;
     private LocalDateTime fechaCita;
-    private String documentosRequeridos;
 }
