@@ -1,94 +1,145 @@
 # Pruebas unitarias — MS Portal Pacientes
 
-Este documento enumera y documenta las pruebas unitarias añadidas, con su propósito y mapeo a los criterios de aceptación del servicio.
+**RedNorte | Fullstack III | DuocUC**
 
-Resumen: 12 pruebas unitarias divididas en dos grupos (service y controller).
+---
 
-1) Service: `PortalPacientesServiceImplTest` (7 pruebas)
-     
-     Archivo: PortalPacientesServiceImplTest.java  
+## Índice
 
-  1.1 `obtenerSolicitudes_success`
-    - Propósito: Verifica que `obtenerSolicitudes` retorna correctamente una `PageResponse` cuando el MS Lista de Espera responde con datos.
-    - Criterio mapeado: GET /portal/solicitudes → 200 y contenido paginado.
+1. [Descripción general](#1-descripci%C3%B3n-general)
+2. [Alcance](#2-alcance)
+3. [Catálogo de pruebas](#3-cat%C3%A1logo-de-pruebas)
+4. [Trazabilidad a criterios de aceptación](#4-trazabilidad-a-criterios-de-aceptaci%C3%B3n)
+5. [Ejecución](#5-ejecuci%C3%B3n)
+6. [Notas adicionales](#6-notas-adicionales)
 
-  1.2 `obtenerSolicitudes_serviceUnavailableOnException`
-    - Propósito: Simula una excepción del cliente HTTP y valida que se lance `ResponseStatusException` con 503.
-    - Criterio mapeado: Si MS Lista de Espera no está disponible → 503 Servicio no disponible.
+---
 
-  1.3 `obtenerDetalle_success`
-    - Propósito: Verifica que `obtenerDetalle` retorna un `SolicitudDetalleResponse` cuando el MS Lista de Espera devuelve un detalle válido.
-    - Criterio mapeado: GET /portal/solicitudes/{id}?rutPaciente=... → 200 con detalle e historial.
+## 1. Descripción general
 
-  1.4 `obtenerDetalle_notFoundWhenNull`
-    - Propósito: Simula que el servicio remoto devuelve `null` y valida que se lance `ResponseStatusException` con 404.
-    - Criterio mapeado: Solicitud no encontrada → 404.
+Este documento presenta las pruebas unitarias del microservicio **MS Portal Pacientes**, organizadas de forma similar a la documentación técnica del proyecto. Su objetivo es dejar trazabilidad entre cada prueba, la clase que la contiene y los criterios de aceptación definidos en el documento base entregado por el usuario.
 
-  1.5 `obtenerDetalle_serviceUnavailableOnException`
-    - Propósito: Simula error del cliente HTTP al pedir detalle y valida 503.
-    - Criterio mapeado: MS Lista de Espera no disponible → 503.
+La cobertura actual considera:
 
-  1.6 `obtenerSolicitudes_nullBody_returnsNull`
-    - Propósito: Comprueba comportamiento cuando la llamada HTTP retorna 200 pero con body null.
-    - Criterio mapeado: Robustez frente a respuestas inesperadas del MS Lista de Espera.
+- 1 prueba de arranque del contexto Spring.
+- 7 pruebas para `PortalPacientesServiceImpl`.
+- 5 pruebas para `PortalPacientesController`.
 
-  1.7 `obtenerSolicitudes_buildsUrlWithRutAndPagination`
-    - Propósito: Verifica que la URL solicitada al MS Lista de Espera contiene `rutPaciente`, `page` y `size`.
-    - Criterio mapeado: Correcta composición de la llamada HTTP externa hacia MS Lista de Espera.
+**Total ejecutado por Maven: 13 pruebas.**
 
-2) Controller: `PortalPacientesControllerTest` (5 pruebas)  
-   Archivo: PortalPacientesControllerTest.java
-  
-  2.1 `obtenerSolicitudes_returnsOkAndContent`
-    - Propósito: Prueba de integración del controlador (MockMvc) que valida respuesta 200 y el JSON contiene la solicitud esperada.
-    - Criterio mapeado: Endpoint GET /portal/solicitudes devolviendo lista paginada visible para el paciente.
+---
 
-  2.2 `obtenerDetalle_returnsOk`
-    - Propósito: Valida que GET /solicitudes/{id}?rutPaciente=. devuelve 200 y el JSON del detalle contiene el id solicitado.
-    - Criterio mapeado: Endpoint de detalle devuelve la estructura esperada con `historial`.
+## 2. Alcance
 
-  2.3 `obtenerDetalle_returnsNotFoundWhenServiceThrows404`
-  2.4 `obtenerSolicitudes_missingRutPaciente_returnsBadRequest`
-    - Propósito: Verifica que si falta el parámetro obligatorio `rutPaciente`, el controlador responde 400.
-    - Criterio mapeado: El endpoint requiere `rutPaciente` (entrada sin autenticación) — parámetros obligatorios deben validarse.
+### Estructura de pruebas
 
-  2.5 `obtenerSolicitudes_forwardsPaginationParametersToService`
-    - Propósito: Valida que `page` y `size` se pasen correctamente desde la petición al servicio.
-    - Criterio mapeado: Soporte de paginación en GET /portal/solicitudes (parámetros `page` y `size`).
+| Tipo | Clase | Cantidad | Propósito |
+|------|-------|----------|-----------|
+| Arranque | `MsPortalPacientesApplicationTests` | 1 | Verificar que el contexto Spring carga correctamente. |
+| Service | `PortalPacientesServiceImplTest` | 7 | Validar lógica de consumo HTTP y manejo de errores. |
+| Controller | `PortalPacientesControllerTest` | 5 | Validar respuestas HTTP y delegación al servicio. |
 
-Las nuevas pruebas están implementadas en los mismos archivos de test previamente indicados.
+### Herramientas de prueba
 
-Cómo ejecutar las pruebas
+| Herramienta | Uso |
+|------------|-----|
+| JUnit 5 | Ejecución de pruebas unitarias |
+| Mockito | Simulación de dependencias externas |
+| MockMvc | Pruebas del controlador sin levantar servidor |
+| Spring Boot Test | Verificación de contexto de aplicación |
+
+---
+
+## 3. Catálogo de pruebas
+
+### 3.1 `MsPortalPacientesApplicationTests`
+
+| Prueba | Propósito | Resultado esperado |
+|--------|-----------|--------------------|
+| `contextLoads` | Verifica que el contexto de Spring Boot inicia correctamente. | La aplicación arranca sin errores. |
+
+### 3.2 `PortalPacientesServiceImplTest`
+
+| Prueba | Propósito | Criterio asociado |
+|--------|-----------|-------------------|
+| `obtenerSolicitudes_success` | Retorna una `PageResponse` válida cuando el MS Lista de Espera responde con datos. | GET `/portal/solicitudes` → 200 con contenido paginado. |
+| `obtenerSolicitudes_serviceUnavailableOnException` | Valida que un error del cliente HTTP se traduzca en 503. | MS Lista de Espera no disponible → 503. |
+| `obtenerDetalle_success` | Retorna el detalle de una solicitud cuando el servicio remoto responde correctamente. | GET `/portal/solicitudes/{id}` → 200 con detalle e historial. |
+| `obtenerDetalle_notFoundWhenNull` | Valida que una respuesta `null` se traduzca en 404. | Solicitud no encontrada → 404. |
+| `obtenerDetalle_serviceUnavailableOnException` | Valida que un fallo del cliente HTTP en el detalle se traduzca en 503. | MS Lista de Espera no disponible → 503. |
+| `obtenerSolicitudes_nullBody_returnsNull` | Comprueba el comportamiento cuando la llamada responde 200 con body nulo. | Robustez ante respuesta inesperada. |
+| `obtenerSolicitudes_buildsUrlWithRutAndPagination` | Verifica que la URL construida incluya `rutPaciente`, `page` y `size`. | Composición correcta de la llamada HTTP. |
+
+### 3.3 `PortalPacientesControllerTest`
+
+| Prueba | Propósito | Criterio asociado |
+|--------|-----------|-------------------|
+| `obtenerSolicitudes_returnsOkAndContent` | Valida la respuesta 200 y el JSON de una lista paginada. | GET `/portal/solicitudes` → 200 con lista paginada. |
+| `obtenerSolicitudes_missingRutPaciente_returnsBadRequest` | Valida que falte `rutPaciente` y responda 400. | El parámetro `rutPaciente` es obligatorio. |
+| `obtenerSolicitudes_forwardsPaginationParametersToService` | Verifica que `page` y `size` lleguen al servicio. | Soporte de paginación en GET `/portal/solicitudes`. |
+| `obtenerDetalle_returnsOk` | Valida la respuesta 200 y el JSON del detalle. | GET `/portal/solicitudes/{id}` → 200 con detalle e historial. |
+| `obtenerDetalle_returnsNotFoundWhenServiceThrows404` | Valida la propagación de 404 cuando el servicio lo devuelve. | Solicitud no encontrada → 404. |
+
+---
+
+## 4. Trazabilidad a criterios de aceptación
+
+Los criterios de aceptación se tomaron como base del documento DOCX entregado por el usuario.
+
+### 4.1 Criterio: GET `/portal/solicitudes` → 200 con lista paginada
+
+| Prueba | Capa |
+|--------|------|
+| `obtenerSolicitudes_success` | Service |
+| `obtenerSolicitudes_returnsOkAndContent` | Controller |
+
+### 4.2 Criterio: GET `/portal/solicitudes/{id}?rutPaciente=...` → 200 con detalle e historial
+
+| Prueba | Capa |
+|--------|------|
+| `obtenerDetalle_success` | Service |
+| `obtenerDetalle_returnsOk` | Controller |
+
+### 4.3 Criterio: solicitud no encontrada → 404
+
+| Prueba | Capa |
+|--------|------|
+| `obtenerDetalle_notFoundWhenNull` | Service |
+| `obtenerDetalle_returnsNotFoundWhenServiceThrows404` | Controller |
+
+### 4.4 Criterio: MS Lista de Espera no disponible → 503
+
+| Prueba | Capa |
+|--------|------|
+| `obtenerSolicitudes_serviceUnavailableOnException` | Service |
+| `obtenerDetalle_serviceUnavailableOnException` | Service |
+
+### 4.5 Criterio: validación de parámetros obligatorios y paginación
+
+| Prueba | Capa |
+|--------|------|
+| `obtenerSolicitudes_missingRutPaciente_returnsBadRequest` | Controller |
+| `obtenerSolicitudes_forwardsPaginationParametersToService` | Controller |
+| `obtenerSolicitudes_buildsUrlWithRutAndPagination` | Service |
+
+---
+
+## 5. Ejecución
 
 ```bash
 ./mvnw.cmd test
 ```
 
-Notas adicionales
+---
+
+## 6. Notas adicionales
+
 - Las pruebas de servicio usan `Mockito` para mockear `RestTemplate`.
 - Las pruebas de controlador usan `MockMvc` con el servicio mockeado.
-- Los nombres de los tests siguen el patrón `givenWhenThen` / `verb_expectedOutcome` para facilitar trazabilidad.
+- Los nombres de los tests siguen el patrón Given/When/Then o `verb_expectedOutcome` para facilitar trazabilidad.
+- Cada prueba está comentada con el escenario esperado para facilitar revisión y mantención.
 
-Mapeo detallado a criterios de aceptación
--------------------------------------
+---
 
-Las pruebas anteriores se vinculan directamente con los criterios de aceptación descritos en las HU.
-
-- Criterio: "GET /portal/solicitudes → Response 200 con lista paginada".
-  - Tests que lo cubren: `obtenerSolicitudes_success` (service) y `obtenerSolicitudes_returnsOkAndContent` (controller).
-
-- Criterio: "Si MS Lista de Espera no está disponible → Response 503".
-  - Tests que lo cubren: `obtenerSolicitudes_serviceUnavailableOnException` (service) y `obtenerDetalle_serviceUnavailableOnException` (service).
-
-- Criterio: "GET /portal/solicitudes/{id}?rutPaciente=... → Response 200 con detalle y `historial`".
-  - Tests que lo cubren: `obtenerDetalle_success` (service) y `obtenerDetalle_returnsOk` (controller).
-
-- Criterio: "Solicitud no encontrada → Response 404".
-  - Tests que lo cubren: `obtenerDetalle_notFoundWhenNull` (service) y `obtenerDetalle_returnsNotFoundWhenServiceThrows404` (controller).
-
-Trazabilidad y recomendaciones
-------------------------------
-
-- Cada prueba incluye ahora comentarios Javadoc que explican el escenario Given/When/Then para facilitar la revisión.
-- Para cubrir criterios adicionales (por ejemplo: validación de `rutPaciente` faltante o parámetros de paginación fuera de rango) se pueden añadir tests complementarios en `PortalPacientesControllerTest`.
+*Documentación de pruebas generada para el proyecto semestral Fullstack III — RedNorte — DuocUC 2026*
 
