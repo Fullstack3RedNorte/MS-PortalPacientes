@@ -5,7 +5,9 @@ Este documento enumera y documenta las pruebas unitarias añadidas, con su prop�
 Resumen: 12 pruebas unitarias divididas en dos grupos (service y controller).
 
 1) Service: `PortalPacientesServiceImplTest` (7 pruebas)
-  - Archivo: src/test/java/cl/rednorte/ms_portal_pacientes/service/impl/PortalPacientesServiceImplTest.java
+     
+     Archivo: PortalPacientesServiceImplTest.java  
+
   1.1 `obtenerSolicitudes_success`
     - Propósito: Verifica que `obtenerSolicitudes` retorna correctamente una `PageResponse` cuando el MS Lista de Espera responde con datos.
     - Criterio mapeado: GET /portal/solicitudes → 200 y contenido paginado.
@@ -34,8 +36,9 @@ Resumen: 12 pruebas unitarias divididas en dos grupos (service y controller).
     - Propósito: Verifica que la URL solicitada al MS Lista de Espera contiene `rutPaciente`, `page` y `size`.
     - Criterio mapeado: Correcta composición de la llamada HTTP externa hacia MS Lista de Espera.
 
-2) Controller: `PortalPacientesControllerTest` (5 pruebas)
-  - Archivo: src/test/java/cl/rednorte/ms_portal_pacientes/controller/PortalPacientesControllerTest.java
+2) Controller: `PortalPacientesControllerTest` (5 pruebas)  
+   Archivo: PortalPacientesControllerTest.java
+  
   2.1 `obtenerSolicitudes_returnsOkAndContent`
     - Propósito: Prueba de integración del controlador (MockMvc) que valida respuesta 200 y el JSON contiene la solicitud esperada.
     - Criterio mapeado: Endpoint GET /portal/solicitudes devolviendo lista paginada visible para el paciente.
