@@ -72,7 +72,7 @@ Notas adicionales
 Mapeo detallado a criterios de aceptación
 -------------------------------------
 
-Las pruebas anteriores se vinculan directamente con los criterios de aceptación descritos en la documentación técnica del proyecto: [ms-portal-pacientes-documentacion.md](ms-portal-pacientes-documentacion.md).
+Las pruebas anteriores se vinculan directamente con los criterios de aceptación descritos en las HU.
 
 - Criterio: "GET /portal/solicitudes → Response 200 con lista paginada".
   - Tests que lo cubren: `obtenerSolicitudes_success` (service) y `obtenerSolicitudes_returnsOkAndContent` (controller).
