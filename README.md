@@ -1,6 +1,6 @@
 # MS Portal Pacientes
 
-Microservicio Portal de Pacientes para la red norte.
+Microservicio Portal de Pacientes para Red Norte.
 
 ## Tecnologías
 
