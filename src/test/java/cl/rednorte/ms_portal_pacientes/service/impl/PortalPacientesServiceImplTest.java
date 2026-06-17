@@ -187,6 +187,11 @@ class PortalPacientesServiceImplTest {
         assertEquals(HttpStatus.SERVICE_UNAVAILABLE, ex.getStatusCode());
     }
 
+        /**
+         * Given: RestTemplate devuelve una página vacía (sin solicitudes).
+         * When: se invoca `obtenerSolicitudes`.
+         * Then: se retorna una página con content vacío y totalElements 0.
+         */
         @Test
         void obtenerSolicitudes_listaVacia_returnsEmptyPage() {
         PageResponse<SolicitudResumenResponse> emptyPage = 
