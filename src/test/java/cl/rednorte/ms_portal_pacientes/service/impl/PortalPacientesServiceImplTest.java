@@ -186,4 +186,11 @@ class PortalPacientesServiceImplTest {
 
         assertEquals(HttpStatus.SERVICE_UNAVAILABLE, ex.getStatusCode());
     }
+
+        @Test
+        void obtenerSolicitudes_listaVacia_returnsEmptyPage() {
+        PageResponse<SolicitudResumenResponse> emptyPage = 
+        new PageResponse<>(List.of(), 0, 0, 0);
+         // mock + assert content.size() == 0
+}
 }

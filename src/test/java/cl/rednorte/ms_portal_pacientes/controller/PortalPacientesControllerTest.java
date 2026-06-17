@@ -6,9 +6,14 @@ import cl.rednorte.ms_portal_pacientes.dto.response.SolicitudResumenResponse;
 import cl.rednorte.ms_portal_pacientes.service.PortalPacientesService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -25,10 +30,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Cada prueba documenta el escenario esperado (Given/When/Then) y valida
  * la respuesta HTTP y el contenido JSON devuelto por el controlador.
  */
+@WebMvcTest(PortalPacientesController.class)
 class PortalPacientesControllerTest {
 
-    private PortalPacientesService service;
-    private MockMvc mockMvc;
+    @Autowired private MockMvc mockMvc;
+    @MockitoBean private PortalPacientesService service;
+
 
     @BeforeEach
     void setup() {
